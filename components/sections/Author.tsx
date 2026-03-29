@@ -4,7 +4,7 @@ import { Reveal } from "@/components/Reveal";
 type AuthorProps = {
   section: {
     title: string;
-    body: string[];
+    body: readonly string[];
     image: { src: string; alt: string };
   };
 };
@@ -26,7 +26,7 @@ export function Author({ section }: AuthorProps) {
         </Reveal>
 
         <Reveal delayMs={120} className="max-w-[34rem]">
-          <p className="eyebrow text-subtle">Author</p>
+          <p className="eyebrow text-subtle">Potter</p>
           <h2 className="mt-4 balanced-text font-serifDisplay text-4xl leading-tight md:text-[3rem]">
             {section.title}
           </h2>

@@ -233,7 +233,7 @@ Surface varies. Form remains.
 #### 文本：
 
 ```text
-XXX is a ceramic artist working with thin porcelain.
+XXX is a ceramic artist working with egg-shell porcelain.
 
 His practice focuses on form, material, and precision.
 

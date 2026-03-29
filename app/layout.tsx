@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Thin Porcelain",
-  description: "A minimalist ceramic artist website focused on thin porcelain and form-driven design."
+  title: "egg-shell porcelain",
+  description: "A minimalist ceramic artist website focused on egg-shell porcelain and form-driven design."
 };
 
 export default function RootLayout({

@@ -8,7 +8,7 @@ type LightProps = {
     body: string;
     images: {
       main: { src: string; alt: string };
-      details: { src: string; alt: string }[];
+      details: readonly { src: string; alt: string }[];
     };
   };
 };
@@ -29,16 +29,18 @@ export function Light({ section }: LightProps) {
             <p className="mt-4 text-base leading-8 text-subtle">{section.body}</p>
           </div>
         </Reveal>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(240px,0.7fr)]">
-          <Reveal className="image-panel light-frame hover-drift rounded-[44px] p-4 md:p-5">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-paper">
+      <div className="page-shell-wide">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.75fr)_minmax(300px,0.72fr)]">
+          <Reveal className="image-panel light-frame hover-drift rounded-[44px] p-3 md:p-4">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[30px] bg-paper">
               <Image
                 src={section.images.main.src}
                 alt={section.images.main.alt}
                 fill
                 className="object-cover brightness-105 transition duration-700 hover:brightness-110"
-                sizes="(max-width: 1024px) 100vw, 700px"
+                sizes="(max-width: 1024px) 100vw, 980px"
               />
             </div>
           </Reveal>
@@ -48,15 +50,15 @@ export function Light({ section }: LightProps) {
               <Reveal
                 key={image.src}
                 delayMs={index * 130}
-                className={`image-panel hover-drift rounded-[30px] p-4 ${index === 1 ? "lg:translate-x-6" : ""}`}
+                className={`image-panel hover-drift rounded-[30px] p-3 ${index === 1 ? "lg:translate-x-4" : ""}`}
               >
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-paper">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[22px] bg-paper">
                   <Image
                     src={image.src}
                     alt={image.alt}
                     fill
                     className="object-cover brightness-[1.02] transition duration-700 hover:brightness-110"
-                    sizes="(max-width: 1024px) 50vw, 320px"
+                    sizes="(max-width: 1024px) 50vw, 360px"
                   />
                 </div>
               </Reveal>

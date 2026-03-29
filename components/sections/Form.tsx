@@ -6,7 +6,7 @@ type FormProps = {
     title: string;
     statement: string;
     body: string;
-    images: { src: string; alt: string }[];
+    images: readonly { src: string; alt: string }[];
   };
 };
 
@@ -22,15 +22,17 @@ export function Form({ section }: FormProps) {
           <p className="mt-5 text-lg leading-8 text-subtle">{section.statement}</p>
           <p className="mt-4 max-w-[30rem] text-base leading-8 text-subtle">{section.body}</p>
         </Reveal>
+      </div>
 
+      <div className="page-shell-wide">
         <div className="grid gap-6 md:grid-cols-2">
           {section.images.map((image, index) => (
             <Reveal
               key={image.src}
               delayMs={index * 120}
-              className={`image-panel hover-drift ${index === 0 ? "md:translate-y-10" : ""} rounded-[34px] p-4`}
+              className={`image-panel hover-drift ${index === 0 ? "md:translate-y-8" : "md:translate-y-20"} rounded-[34px] p-3 md:p-4`}
             >
-              <div className="relative aspect-[5/6] overflow-hidden rounded-[24px] bg-paper">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[24px] bg-paper">
                 <Image
                   src={image.src}
                   alt={image.alt}

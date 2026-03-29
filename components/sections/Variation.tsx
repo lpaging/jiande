@@ -5,7 +5,7 @@ type VariationProps = {
   section: {
     statement: string;
     body: string;
-    images: { src: string; alt: string }[];
+    images: readonly { src: string; alt: string }[];
   };
 };
 
@@ -20,15 +20,25 @@ export function Variation({ section }: VariationProps) {
           </p>
           <p className="mt-5 text-base leading-8 text-subtle">{section.body}</p>
         </Reveal>
+      </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+      <div className="page-shell-wide">
+        <div className="grid items-start gap-5 md:grid-cols-3">
           {section.images.map((image, index) => (
             <Reveal
               key={image.src}
               delayMs={index * 110}
-              className={`image-panel hover-drift rounded-[28px] p-3 ${index === 1 ? "md:translate-y-12" : ""}`}
+              className={`image-panel hover-drift self-start rounded-[28px] p-3 ${
+                index === 0
+                  ? "md:translate-y-24"
+                  : index === 1
+                    ? "md:translate-y-8"
+                    : "md:translate-y-16"
+              }`}
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-paper">
+              <div
+                className={`relative overflow-hidden rounded-[20px] bg-paper ${index === 1 ? "aspect-[4/5]" : "aspect-[16/11]"}`}
+              >
                 <Image
                   src={image.src}
                   alt={image.alt}

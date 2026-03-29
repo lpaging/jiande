@@ -1,1 +1,1 @@
-This project is a minimalist ceramic artist website focused on thin porcelain and form-driven design.
+This project is a minimalist website for ceramic artist Lu Jiande, focused on egg-shell porcelain, bowl-centered forms, and restrained presentation. The current implementation is a Next.js 14 single-page homepage with scroll-led hero transitions, wide landscape-friendly image sections, and Docker Compose deployment support for lujiande.com.
