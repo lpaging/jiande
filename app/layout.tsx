@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "egg-shell porcelain",
+  title: "Lu Jiande",
   description: "A minimalist ceramic artist website focused on egg-shell porcelain and form-driven design."
 };
 

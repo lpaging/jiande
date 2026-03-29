@@ -78,7 +78,7 @@ export function Entrance({ hero }: EntranceProps) {
     const thirdOpacity = smoothStep(0.54, 0.82, progress);
 
     const opacities = [firstOpacity, secondOpacity, thirdOpacity];
-    const hiddenOffsets = [-10, 10, 16];
+    const hiddenOffsets = [-10, 0, 10];
 
     return heroImages.map((image, index) => {
       const opacity = opacities[index] ?? 0;
