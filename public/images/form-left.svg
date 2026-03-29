@@ -1,0 +1,16 @@
+<svg width="1200" height="1400" viewBox="0 0 1200 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1400" fill="#EAE6DE"/>
+  <path d="M352 358C322 588 346 938 600 1030C854 938 878 588 848 358" fill="url(#vessel)"/>
+  <path d="M352 358C322 588 346 938 600 1030C854 938 878 588 848 358" stroke="#F7F3EA" stroke-width="16"/>
+  <ellipse cx="600" cy="348" rx="286" ry="82" fill="#FAF8F2"/>
+  <ellipse cx="600" cy="348" rx="224" ry="56" fill="#E4DED1"/>
+  <path d="M450 420C432 610 460 842 600 930C740 842 768 610 750 420" stroke="#D8D0C1" stroke-width="12" stroke-linecap="round"/>
+  <path d="M310 1160C420 1098 780 1098 890 1160" stroke="#D1C8B8" stroke-width="8" opacity="0.55"/>
+  <defs>
+    <linearGradient id="vessel" x1="600" y1="266" x2="600" y2="1030" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FEFCF7"/>
+      <stop offset="0.54" stop-color="#F0EBDD"/>
+      <stop offset="1" stop-color="#D7CFBF"/>
+    </linearGradient>
+  </defs>
+</svg>

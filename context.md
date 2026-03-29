@@ -1,0 +1,1 @@
+This project is a minimalist ceramic artist website focused on thin porcelain and form-driven design.
