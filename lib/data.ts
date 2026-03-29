@@ -3,18 +3,18 @@ export const siteData = {
     title: "薄胎瓷",
     subtitle: "JianDe Works",
     description:
-      "20cm玛瑙红山水纹薄胎碗。器形先于叙述，光线先于装饰。",
+      "20cm玛瑙红山水纹薄胎碗。\n器形先于叙述，光线先于装饰。",
     images: [
       {
-        src: "/images/hero-1.JPG",
+        src: "/images/hero-1.webp",
         alt: "Porcelain bowl, first viewing angle"
       },
       {
-        src: "/images/hero-2.JPG",
+        src: "/images/hero-2.webp",
         alt: "Porcelain bowl, second viewing angle"
       },
       {
-        src: "/images/hero-3.JPG",
+        src: "/images/hero-3.webp",
         alt: "Porcelain bowl, third viewing angle"
       }
     ]

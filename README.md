@@ -16,6 +16,7 @@ The site is built as a restrained, image-led single-page experience focused on e
 - Wide gallery layouts tuned for mostly landscape ceramic photography
 - Minimal section structure: Entrance, Form, Light, Variation, Author, Entry
 - Docker Compose deployment support
+- `public/` bind-mounted in Docker for image-only updates without rebuild
 - Nginx reverse proxy template for `lujiande.com`
 
 ## Project Structure
@@ -52,9 +53,11 @@ Example:
 
 ```ts
 images: [
-  { src: "/images/hero-1.JPG", alt: "Porcelain bowl, first viewing angle" }
+  { src: "/images/hero-1.webp", alt: "Porcelain bowl, first viewing angle" }
 ]
 ```
+
+Preferred asset format is `webp` for production delivery.
 
 ## Docker Deployment
 
@@ -68,6 +71,12 @@ Default port is controlled by `.env`:
 
 ```env
 APP_PORT=3000
+```
+
+The `public/` directory is mounted into the container. If you only replace images under `public/images/`, restart the service instead of rebuilding:
+
+```bash
+docker compose restart web
 ```
 
 ## Production Notes

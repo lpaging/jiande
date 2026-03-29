@@ -9,6 +9,13 @@
 docker compose up --build -d
 ```
 
+The `public/` directory is bind-mounted into the container, so image updates do not require rebuilding the image.
+After replacing files under `public/images/`, restart the service:
+
+```bash
+docker compose restart web
+```
+
 3. Check logs:
 
 ```bash
@@ -36,4 +43,10 @@ After updating code or images:
 
 ```bash
 docker compose up --build -d
+```
+
+If you only changed static assets in `public/`, use:
+
+```bash
+docker compose restart web
 ```

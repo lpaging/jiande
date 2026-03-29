@@ -12,7 +12,6 @@ type EntranceProps = {
       src: string;
       alt: string;
     }[];
-    image?: string;
   };
 };
 
@@ -31,21 +30,7 @@ export function Entrance({ hero }: EntranceProps) {
   const [isPinned, setIsPinned] = useState(false);
   const [frameOffsetTop, setFrameOffsetTop] = useState(0);
 
-  const heroImages = useMemo(() => {
-    if (hero.images && hero.images.length > 0) {
-      return hero.images;
-    }
-
-    if (hero.image) {
-      return [
-        { src: hero.image, alt: "Porcelain bowl, first viewing angle" },
-        { src: hero.image, alt: "Porcelain bowl, second viewing angle" },
-        { src: hero.image, alt: "Porcelain bowl, third viewing angle" }
-      ];
-    }
-
-    return [];
-  }, [hero.image, hero.images]);
+  const heroImages = hero.images ?? [];
 
   useEffect(() => {
     const updateProgress = () => {
@@ -72,40 +57,35 @@ export function Entrance({ hero }: EntranceProps) {
   }, []);
 
   const layeredImages = useMemo(() => {
-    const firstOpacity = 1 - smoothStep(0.22, 0.46, progress);
+    const firstOpacity = 1 - smoothStep(0.2, 0.46, progress);
     const secondOpacity =
-      smoothStep(0.18, 0.4, progress) * (1 - smoothStep(0.58, 0.8, progress));
+      smoothStep(0.18, 0.4, progress) * (1 - smoothStep(0.58, 0.82, progress));
     const thirdOpacity = smoothStep(0.54, 0.82, progress);
-
     const opacities = [firstOpacity, secondOpacity, thirdOpacity];
-    const hiddenOffsets = [-10, 0, 10];
+    const hiddenScales = [1.02, 1.01, 1.02];
 
     return heroImages.map((image, index) => {
       const opacity = opacities[index] ?? 0;
-      const scale = 1.028 - opacity * 0.028;
-      const xOffset = hiddenOffsets[index] * (1 - opacity);
 
       return {
         ...image,
         opacity,
-        scale,
-        xOffset,
-        zIndex: index + 1
+        scale: opacity > 0 ? 1 : hiddenScales[index] ?? 1.02
       };
     });
   }, [heroImages, progress]);
 
   return (
-    <section ref={sectionRef} className="relative min-h-[170vh]">
+    <section ref={sectionRef} className="relative min-h-[190vh]">
       <div
         className="absolute inset-x-0 top-0 z-0"
-        style={{ height: "170vh", background: "var(--hero-bg)" }}
+        style={{ height: "190vh", background: "var(--hero-bg)" }}
         aria-hidden="true"
       />
 
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0"
-        style={{ height: "170vh" }}
+        style={{ height: "190vh" }}
         aria-hidden="true"
       >
         <div
@@ -113,21 +93,20 @@ export function Entrance({ hero }: EntranceProps) {
           style={isPinned ? undefined : { top: `calc(50vh + ${frameOffsetTop}px)` }}
         >
           <div className="relative h-full w-full animate-rise [animation-delay:160ms]">
-            {layeredImages.map((image, index) => (
+            {layeredImages.map((image) => (
               <div
-                key={`${image.src}-${index}`}
-                className="absolute inset-0 transition-[opacity,transform] duration-700 ease-out"
+                key={image.src}
+                className="absolute inset-0 transition-[opacity,transform] duration-500 ease-out"
                 style={{
                   opacity: image.opacity,
-                  transform: `translateX(${image.xOffset}px) scale(${image.scale})`,
-                  zIndex: image.zIndex
+                  transform: `scale(${image.scale})`
                 }}
               >
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  priority={index === 0}
+                  priority
                   className="object-contain object-center"
                   sizes="100vw"
                 />
@@ -143,7 +122,7 @@ export function Entrance({ hero }: EntranceProps) {
 
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-10"
-        style={{ height: "170vh" }}
+        style={{ height: "190vh" }}
         aria-hidden="true"
       >
         <div
@@ -163,7 +142,7 @@ export function Entrance({ hero }: EntranceProps) {
 
             <div className="pb-[14vh]">
               <div className="flex justify-end pb-4 md:pb-6">
-                <p className="max-w-[18rem] animate-rise text-sm leading-7 text-subtle [animation-delay:420ms]">
+                <p className="max-w-[18rem] animate-rise whitespace-pre-line text-sm leading-7 text-subtle [animation-delay:420ms]">
                   {hero.description}
                 </p>
               </div>

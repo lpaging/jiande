@@ -12,6 +12,8 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 3000
       HOSTNAME: 0.0.0.0
+    volumes:
+      - ./public:/app/public
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000"]
       interval: 30s
