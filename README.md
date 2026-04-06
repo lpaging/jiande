@@ -1,7 +1,7 @@
 # Lu Jiande
 
 Official website project for ceramic artist Lu Jiande.  
-The site is built as a restrained, image-led single-page experience focused on egg-shell porcelain, bowl-centered forms, light, and material presence.
+The site is built as a restrained, image-led experience focused on egg-shell porcelain, bowl-centered forms, light, and material presence.
 
 ## Stack
 
@@ -13,7 +13,10 @@ The site is built as a restrained, image-led single-page experience focused on e
 ## Features
 
 - Scroll-led hero section using three stacked bowl images
+- Four inner routes: `Works`, `Collections`, `News`, `About`
+- Homepage remains a pure exhibition surface; `View Works` acts as the transition into the inner pages
 - Wide gallery layouts tuned for mostly landscape ceramic photography
+- `Works` uses ratio-aware image presentation to avoid aggressive cropping
 - Minimal section structure: Entrance, Form, Light, Variation, Author, Entry
 - Docker Compose deployment support
 - `public/` bind-mounted in Docker for image-only updates without rebuild
@@ -24,6 +27,7 @@ The site is built as a restrained, image-led single-page experience focused on e
 ```text
 app/                    Next.js routes and global styles
 components/sections/    Homepage sections
+components/site/        Shared inner-page shell
 lib/data.ts             Page content and image references
 public/images/          Site images
 deploy/                 Deployment notes and nginx config
@@ -58,6 +62,17 @@ images: [
 ```
 
 Preferred asset format is `webp` for production delivery.
+
+## Content Editing
+
+This project currently does not use a CMS or admin backend.  
+The simplest way to update page copy is to edit `lib/data.ts` directly.
+
+Current content strategy:
+
+- Chinese is primary
+- English is secondary
+- homepage remains the visual reference for tone and restraint
 
 ## Docker Deployment
 

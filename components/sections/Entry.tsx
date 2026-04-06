@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 
 type EntryProps = {
@@ -12,13 +13,13 @@ export function Entry({ section }: EntryProps) {
     <section className="pb-24 pt-4 md:pb-28">
       <div className="page-shell">
         <Reveal className="border-t border-line pt-10">
-          <a
-            href="#"
+          <Link
+            href="/works"
             className="group inline-flex items-center gap-4 font-serifDisplay text-[2rem] leading-none tracking-[0.02em] text-ink md:text-[2.6rem]"
           >
             <span>{section.label}</span>
             <span className="transition-transform duration-300 group-hover:translate-x-2">→</span>
-          </a>
+          </Link>
           <p className="mt-4 max-w-[24rem] text-sm leading-7 text-subtle">{section.hint}</p>
         </Reveal>
       </div>
