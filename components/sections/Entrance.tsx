@@ -1,134 +1,63 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { HeroBowl } from "@/components/sections/HeroBowl";
 
 type EntranceProps = {
   hero: {
     title: string;
     subtitle: string;
     description: string;
-    images?: readonly {
-      src: string;
-      alt: string;
-    }[];
+    images?: readonly { src: string; alt: string }[];
   };
 };
+
+type ViewerStatus = "loading" | "ready" | "fallback";
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-function smoothStep(edge0: number, edge1: number, value: number) {
-  const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
-  return x * x * (3 - 2 * x);
-}
-
 export function Entrance({ hero }: EntranceProps) {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
-  const [isPinned, setIsPinned] = useState(false);
-  const [frameOffsetTop, setFrameOffsetTop] = useState(0);
-
-  const heroImages = hero.images ?? [];
+  const [viewerStatus, setViewerStatus] = useState<ViewerStatus>("loading");
+  const fallbackImage = hero.images?.[0] ?? {
+    src: "/images/hero-1.webp",
+    alt: "玛瑙红山水纹薄胎瓷碗"
+  };
 
   useEffect(() => {
     const updateProgress = () => {
-      const node = sectionRef.current;
+      const node = trackRef.current;
       if (!node) return;
-
       const rect = node.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const total = Math.max(rect.height - viewportHeight, 1);
-      const next = clamp(-rect.top / total, 0, 1);
-      setProgress(next);
-      setIsPinned(rect.top <= 0 && rect.bottom >= viewportHeight);
-      setFrameOffsetTop(Math.max(rect.height - viewportHeight, 0));
+      const distance = Math.max(rect.height - viewportHeight, 1);
+      setProgress(clamp(-rect.top / distance, 0, 1));
     };
 
     updateProgress();
     window.addEventListener("scroll", updateProgress, { passive: true });
     window.addEventListener("resize", updateProgress);
-
     return () => {
       window.removeEventListener("scroll", updateProgress);
       window.removeEventListener("resize", updateProgress);
     };
   }, []);
 
-  const layeredImages = useMemo(() => {
-    const firstOpacity = 1 - smoothStep(0.2, 0.46, progress);
-    const secondOpacity =
-      smoothStep(0.18, 0.4, progress) * (1 - smoothStep(0.58, 0.82, progress));
-    const thirdOpacity = smoothStep(0.54, 0.82, progress);
-    const opacities = [firstOpacity, secondOpacity, thirdOpacity];
-    const hiddenScales = [1.02, 1.01, 1.02];
-
-    return heroImages.map((image, index) => {
-      const opacity = opacities[index] ?? 0;
-
-      return {
-        ...image,
-        opacity,
-        scale: opacity > 0 ? 1 : hiddenScales[index] ?? 1.02
-      };
-    });
-  }, [heroImages, progress]);
-
   return (
-    <section ref={sectionRef} className="relative min-h-[190vh]">
-      <div
-        className="absolute inset-x-0 top-0 z-0"
-        style={{ height: "190vh", background: "var(--hero-bg)" }}
-        aria-hidden="true"
-      />
-
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0"
-        style={{ height: "190vh" }}
-        aria-hidden="true"
+    <div ref={trackRef} className="relative h-[190vh]" style={{ background: "var(--hero-bg)" }}>
+      <section
+        className="sticky top-0 z-0 h-screen"
+        style={{ background: "var(--hero-bg)" }}
+        aria-label="薄胎瓷作品"
       >
-        <div
-          className={`left-1/2 h-[82vh] w-[90vw] -translate-x-1/2 md:h-[84vh] ${isPinned ? "fixed top-1/2 -translate-y-1/2" : "absolute top-1/2 -translate-y-1/2"}`}
-          style={isPinned ? undefined : { top: `calc(50vh + ${frameOffsetTop}px)` }}
-        >
-          <div className="relative h-full w-full animate-rise [animation-delay:160ms]">
-            {layeredImages.map((image) => (
-              <div
-                key={image.src}
-                className="absolute inset-0 transition-[opacity,transform] duration-500 ease-out"
-                style={{
-                  opacity: image.opacity,
-                  transform: `scale(${image.scale})`
-                }}
-              >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  priority
-                  className="object-contain object-center"
-                  sizes="100vw"
-                />
-              </div>
-            ))}
-
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(237,237,237,0.16),rgba(237,237,237,0.04)_24%,rgba(237,237,237,0.04)_76%,rgba(237,237,237,0.14))]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_36%,rgba(255,255,255,0.34),rgba(255,255,255,0.1)_22%,transparent_54%)]" />
-            <div className="absolute inset-x-[18%] bottom-[18%] h-[18%] rounded-[50%] bg-[radial-gradient(circle,rgba(34,34,34,0.09),rgba(34,34,34,0.035)_38%,transparent_72%)] blur-3xl" />
-          </div>
+        <div className="absolute left-1/2 top-1/2 h-[82vh] w-[90vw] -translate-x-1/2 -translate-y-1/2 md:h-[84vh]">
+          <HeroBowl progress={progress} image={fallbackImage} onStatusChange={setViewerStatus} />
         </div>
-      </div>
 
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-10"
-        style={{ height: "190vh" }}
-        aria-hidden="true"
-      >
-        <div
-          className={`h-screen ${isPinned ? "fixed inset-x-0 top-0" : "absolute inset-x-0 top-0"}`}
-          style={isPinned ? undefined : { top: `${frameOffsetTop}px` }}
-        >
+        <div className="pointer-events-none absolute inset-0 z-10">
           <div className="page-shell flex h-full flex-col justify-between py-8 md:py-10">
             <div className="max-w-[16rem] self-start pt-3 md:max-w-[18rem] md:pt-6">
               <p className="eyebrow animate-rise text-subtle [animation-delay:120ms]">egg-shell porcelain</p>
@@ -140,7 +69,7 @@ export function Entrance({ hero }: EntranceProps) {
               </p>
             </div>
 
-            <div className="pb-[14vh]">
+            <div className="pb-[10vh] md:pb-[14vh]">
               <div className="flex justify-end pb-4 md:pb-6">
                 <p className="max-w-[18rem] animate-rise whitespace-pre-line text-sm leading-7 text-subtle [animation-delay:420ms]">
                   {hero.description}
@@ -148,14 +77,19 @@ export function Entrance({ hero }: EntranceProps) {
               </div>
 
               <div className="mt-6 flex justify-center">
-                <p className="eyebrow text-[0.72rem] text-subtle/80">Scroll to shift the view</p>
+                {viewerStatus === "ready" ? (
+                  <>
+                    <p className="text-[0.72rem] tracking-[0.08em] text-subtle/90 md:hidden">上下滑动浏览 · 横向旋转 · 双指调整</p>
+                    <p className="hidden text-[0.72rem] tracking-[0.08em] text-subtle/90 md:block">滚动观看 · 左键旋转 · 右键缩放</p>
+                  </>
+                ) : (
+                  <p className="eyebrow text-[0.72rem] text-subtle/80">Scroll to explore</p>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="h-[70vh]" aria-hidden="true" />
-    </section>
+      </section>
+    </div>
   );
 }

@@ -1,0 +1,2 @@
+# Preserve the existing CRLF-formatted project instructions in whitespace checks.
+AGENTS.md whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

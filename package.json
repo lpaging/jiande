@@ -7,17 +7,23 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare:hero": "node scripts/prepare-hero-frames.mjs"
+    "prepare:hero": "node scripts/prepare-hero-frames.mjs",
+    "build:hero-model": "node scripts/build-hero-model.mjs",
+    "check:hero-model": "node scripts/check-hero-model.mjs",
+    "capture:hero-posters": "node scripts/capture-hero-posters.mjs"
   },
   "dependencies": {
     "next": "14.2.30",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "three": "0.180.0"
   },
   "devDependencies": {
+    "@gltf-transform/core": "4.2.1",
     "@types/node": "20.17.30",
     "@types/react": "18.3.23",
     "@types/react-dom": "18.3.7",
+    "@types/three": "0.180.0",
     "autoprefixer": "10.4.21",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.30",

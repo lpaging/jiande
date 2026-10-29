@@ -31,9 +31,10 @@
 * Tailwind CSS
 * 使用 utility-first，不使用额外 UI 框架（如 antd）
 
-### 动效
+### 动效与三维展示
 
-* Framer Motion（仅用于轻量动效）
+* 使用 CSS 过渡与轻量动效；Three.js 和 GLTFLoader 加载本地 GLB 模型
+* 不依赖远程三维服务；修改交互时保留滚动、触屏、键盘和减少动态效果的支持
 
 ### 图片处理
 
@@ -51,23 +52,29 @@
 ```bash
 /app
   /page.tsx                # 首页
+  /works /collections /news /about  # 内页
   /layout.tsx              # 全局布局
   /globals.css             # 全局样式
 
 /components
   /sections
-    Entrance.tsx
+    Entrance.tsx           # 首屏叙事与滚动进度
+    HeroBowl.tsx           # 三维模型与交互
     Form.tsx
     Light.tsx
     Variation.tsx
     Author.tsx
     Entry.tsx
+  /site                    # 内页共用组件
 
 /lib
-  data.ts                  # 临时数据（后期接CMS）
+  data.ts                  # 静态内容与图片引用
 
 /public
-  /images
+  /images                  # 照片与模型加载占位图
+  /models                  # 本地 GLB 模型
+/scripts                   # 模型、纹理和占位图生成及检查脚本
+/deploy                    # Docker Compose 部署说明与 Nginx 模板
 ```
 
 ---
@@ -129,15 +136,25 @@ max-width: 1100px
 
 #### 实现要求：
 
-* 高度：100vh
-* 图片居中
-* 文本靠边（不要居中）
+* 可见首屏高度为 100vh；190vh 叙事区内首屏保持 sticky，滚动时模型缓慢旋转一周
+* 碗居中，文本靠边（不要居中）；模型加载占位图应与模型首帧对齐，不出现跳动
+* 桌面左键拖动旋转、右键上下拖动缩放；滚轮用于页面滚动
+* 手机单指上下滚动、横向旋转，双指调整视角和缩放；保留键盘旋转和缩放
+* 减少动态效果时停用滚动旋转；WebGL 或模型不可用时回退至第一张照片
+
+#### 模型要求：
+
+* 模型为三张照片的近似重建，外径 200 mm，碗身和碗足壁厚均为 0.4 mm；碗足原高度约 13.6 mm
+* 对齐原照片中的山水、树木、印章和书法，照片重叠处不插入另造的场景，也不推断文字
+* 内壁保持均匀暖白；避免投影和玻璃般透明材质，薄胎感由柔和受光表现
+* `public/models/` 的高分辨率及紧凑 GLB、`public/images/hero-bowl-poster*.webp` 均为发布资源；更换模型、相机或灯光后同步重新生成占位图
 
 #### 内容：
 
 ```text
-Artist Name
-Ceramic Works
+egg-shell porcelain
+薄胎瓷
+JianDe Works
 ```
 
 #### 禁止：
@@ -258,7 +275,7 @@ View Works →
 
 ## 7. 动效规则（Animation Rules）
 
-仅允许以下：
+页面动效仅允许以下方式，首屏模型按上述交互规则随滚动旋转：
 
 1. fade-in（opacity）
 2. translateY（轻微）
@@ -279,16 +296,13 @@ View Works →
 * 所有 grid → 单列
 * 图片优先
 * 文字后置
+* 三维展示使用紧凑 GLB，确保页面滚动与触屏操作互不阻碍
 
 ---
 
 ## 9. 开发优先级（Priority）
 
-当前阶段只实现：
-
-* 首页（page.tsx）
-* 所有 section 组件
-* 静态数据
+当前项目包括首页、`Works`、`Collections`、`News`、`About` 内页和静态数据。修改时保持首页叙事与现有内页结构一致。
 
 ❗暂不实现：
 
@@ -307,7 +321,17 @@ View Works →
 
 ---
 
-## 11. 最重要原则（Final Rule）
+## 11. 本地检查与部署
+
+* 安装依赖并启动：`npm ci`、`npm run dev`；生产构建：`npm run build`
+* 修改模型后运行 `npm run build:hero-model` 和 `npm run check:hero-model`；修改模型、相机或灯光后按 README 重新生成加载占位图
+* 按改动运行 `npx tsc --noEmit`、`git diff --check` 及必要的浏览器检查
+* 部署按 `deploy/DEPLOY.md`；Compose 挂载整个 `public/`，代码、两个 GLB 和三张占位图必须来自同一版本
+* `.env`、`.next/`、`node_modules/`、`.DS_Store` 等本机文件不要提交；生成的 GLB 和占位图需要随相关源码提交
+
+---
+
+## 12. 最重要原则（Final Rule）
 
 > 首页不是作品列表，而是“如何观看这些作品”的引导。
 
